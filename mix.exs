@@ -25,11 +25,11 @@ defmodule MixTaskArchiveDeps.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     description: "Mix task to create archives for a project dependencies and elixir itself",
+     description: "Mix task to create archives for a project dependencies and Elixir itself",
      package: package(),
      deps: deps(),
      name: "MixTaskArchiveDeps",
-     source_url: "https://github.com/hairyhum/mix_task_archive_deps"]
+     source_url: "https://github.com/rabbitmq/mix_task_archive_deps"]
   end
 
   # Configuration for the OTP application
@@ -50,7 +50,7 @@ defmodule MixTaskArchiveDeps.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:ex_doc, "~> 0.14", only: :dev}]
+    [{:ex_doc, "~> 0.16", only: :dev}]
   end
   defp package() do
     [name: :mix_task_archive_deps,
