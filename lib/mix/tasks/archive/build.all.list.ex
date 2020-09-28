@@ -4,7 +4,6 @@
 ##
 ## Copyright (c) 2007-2020 VMware, Inc. or its affiliates.  All rights reserved.
 
-
 defmodule Mix.Tasks.Archive.Build.All.List do
   use Mix.Task
 
@@ -25,14 +24,10 @@ defmodule Mix.Tasks.Archive.Build.All.List do
   * `--skip` - a space-separated list of dependencies to skip
   """
 
-
-  @switches [destination: :string,
-             elixir: :boolean,
-             separator: :string,
-             skip: :string]
+  @switches [destination: :string, elixir: :boolean, separator: :string, skip: :string]
   @aliases [o: :destination, e: :elixir, s: :separator]
 
-  @spec run(OptionParser.argv) :: :ok
+  @spec run(OptionParser.argv()) :: :ok
   def run(argv) do
     Mix.Tasks.Loadpaths.run([])
     {opts, _} = OptionParser.parse!(argv, aliases: @aliases, strict: @switches)
@@ -40,21 +35,22 @@ defmodule Mix.Tasks.Archive.Build.All.List do
     elixir = opts[:elixir] || false
     separator = opts[:separator] || "\n"
 
-    archive_name = Mix.Local.name_for(:archives, Mix.Project.config)
+    archive_name = Mix.Local.name_for(:archives, Mix.Project.config())
     archive_path = Path.join([destination, archive_name])
 
     deps_archives = Mix.Tasks.Archive.Build.Deps.list_archives(opts)
 
-    elixir_archives = if elixir do
-      Mix.Tasks.Archive.Build.Elixir.list_archives(opts)
-    else
-      []
-    end
+    elixir_archives =
+      if elixir do
+        Mix.Tasks.Archive.Build.Elixir.list_archives(opts)
+      else
+        []
+      end
 
     [[archive_path], deps_archives, elixir_archives]
-    |> Enum.concat
+    |> Enum.concat()
     |> Enum.join(separator)
-    |> IO.puts
+    |> IO.puts()
 
     :ok
   end

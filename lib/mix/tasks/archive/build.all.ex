@@ -4,7 +4,6 @@
 ##
 ## Copyright (c) 2007-2020 VMware, Inc. or its affiliates.  All rights reserved.
 
-
 defmodule Mix.Tasks.Archive.Build.All do
   use Mix.Task
 
@@ -39,24 +38,24 @@ defmodule Mix.Tasks.Archive.Build.All do
   * `--skip` - a space-separated list of dependencies to skip
   """
 
-
   @switches [destination: :string, elixir: :boolean, skip: :string]
   @aliases [o: :destination, e: :elixir, l: :list]
 
-  @spec run(OptionParser.argv) :: :ok
+  @spec run(OptionParser.argv()) :: :ok
   def run(argv) do
     Mix.Tasks.Loadpaths.run([])
     {opts, _} = OptionParser.parse!(argv, aliases: @aliases, strict: @switches)
     destination = Mix.Archive.Build.Helpers.destination(opts)
     Mix.Tasks.Archive.Build.Deps.build_archives(opts)
 
-    archive_name = Mix.Local.name_for(:archives, Mix.Project.config)
+    archive_name = Mix.Local.name_for(:archives, Mix.Project.config())
     archive_path = Path.join([destination, archive_name])
     Mix.Tasks.Archive.Build.run(["-o", archive_path])
 
     if opts[:elixir] do
       Mix.Tasks.Archive.Build.Elixir.build_archives(opts)
     end
+
     :ok
   end
 end

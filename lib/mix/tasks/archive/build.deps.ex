@@ -4,10 +4,9 @@
 ##
 ## Copyright (c) 2007-2020 VMware, Inc. or its affiliates.  All rights reserved.
 
-
 defmodule Mix.Tasks.Archive.Build.Deps do
   use Mix.Task
-  alias  Mix.Archive.Build.Helpers, as: Helpers
+  alias Mix.Archive.Build.Helpers, as: Helpers
 
   @shortdoc "Archives the project dependencies into .ez files"
 
@@ -33,7 +32,7 @@ defmodule Mix.Tasks.Archive.Build.Deps do
   @switches [destination: :string, skip: :string]
   @aliases [o: :destination]
 
-  @spec run(OptionParser.argv) :: :ok
+  @spec run(OptionParser.argv()) :: :ok
   def run(argv) do
     {opts, _} = OptionParser.parse!(argv, aliases: @aliases, strict: @switches)
     build_archives(opts)
@@ -41,30 +40,33 @@ defmodule Mix.Tasks.Archive.Build.Deps do
 
   def build_archives(opts) do
     list(opts)
-    |>  Enum.each(fn({app_dir, archive_path}) ->
-          Mix.Tasks.Archive.Build.run(["-i", app_dir, "-o", archive_path])
-        end)
+    |> Enum.each(fn {app_dir, archive_path} ->
+      Mix.Tasks.Archive.Build.run(["-i", app_dir, "-o", archive_path])
+    end)
+
     :ok
   end
 
   def list_archives(opts) do
     list(opts)
-    |> Enum.map(fn({_, archive_path}) -> archive_path end)
+    |> Enum.map(fn {_, archive_path} -> archive_path end)
   end
 
   defp list(opts) do
-    build_path = Mix.Project.build_path
+    build_path = Mix.Project.build_path()
     destination = Helpers.destination(opts)
     skip = Helpers.skipped_apps(opts)
 
     ## Build delendencies archives
-    Mix.Dep.load_on_environment(env: Mix.env)
-    |>  Enum.filter(fn(%Mix.Dep{app: app}) -> not Enum.member?(skip, app) end)
-    |>  Enum.map(fn(%Mix.Dep{app: app, status: status}) ->
-      version = case status do
-        {:ok, vsn} when vsn != nil -> vsn
-        reason -> :erlang.error({:invalid_status, reason})
-      end
+    Mix.Dep.load_on_environment(env: Mix.env())
+    |> Enum.filter(fn %Mix.Dep{app: app} -> not Enum.member?(skip, app) end)
+    |> Enum.map(fn %Mix.Dep{app: app, status: status} ->
+      version =
+        case status do
+          {:ok, vsn} when vsn != nil -> vsn
+          reason -> :erlang.error({:invalid_status, reason})
+        end
+
       archive_path = Path.join([destination, "#{app}-#{version}.ez"])
       app_dir = Path.join([build_path, "lib", "#{app}"])
       {app_dir, archive_path}
