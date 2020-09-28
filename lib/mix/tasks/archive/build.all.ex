@@ -61,7 +61,7 @@ defmodule Mix.Tasks.Archive.Build.All do
     destination = Mix.Archive.Build.Helpers.destination(opts)
     Mix.Tasks.Archive.Build.Deps.build_archives(opts)
 
-    archive_name = Mix.Local.name_for(:archive, Mix.Project.config)
+    archive_name = Mix.Local.name_for(:archives, Mix.Project.config)
     archive_path = Path.join([destination, archive_name])
     Mix.Tasks.Archive.Build.run(["-o", archive_path])
 
