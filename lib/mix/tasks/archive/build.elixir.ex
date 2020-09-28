@@ -2,7 +2,7 @@
 ## The contents of this file are subject to the Mozilla Public License
 ## Version 1.1 (the "License"); you may not use this file except in
 ## compliance with the License. You may obtain a copy of the License
-## at http://www.mozilla.org/MPL/
+## at https://www.mozilla.org/MPL/
 ##
 ## Software distributed under the License is distributed on an "AS IS"
 ## basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
@@ -26,7 +26,7 @@ defmodule Mix.Tasks.Archive.Build.Elixir do
   @moduledoc """
   Builds each elixir project required by the project into
   archives according to the specification of the
-  [Erlang Archive Format](http://www.erlang.org/doc/man/code.html).
+  [Erlang Archive Format](https://www.erlang.org/doc/man/code.html).
 
   This task goal is to create packages. which could
   be used from Erlang environment without Elixir installation.

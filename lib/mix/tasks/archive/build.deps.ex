@@ -2,7 +2,7 @@
 ## The contents of this file are subject to the Mozilla Public License
 ## Version 1.1 (the "License"); you may not use this file except in
 ## compliance with the License. You may obtain a copy of the License
-## at http://www.mozilla.org/MPL/
+## at https://www.mozilla.org/MPL/
 ##
 ## Software distributed under the License is distributed on an "AS IS"
 ## basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
@@ -24,7 +24,7 @@ defmodule Mix.Tasks.Archive.Build.Deps do
 
   @moduledoc """
   Builds each dependency into archives according to the specification of the
-  [Erlang Archive Format](http://www.erlang.org/doc/man/code.html).
+  [Erlang Archive Format](https://www.erlang.org/doc/man/code.html).
 
   Archives are prebuild packages, which can be used by both Erlang and Elixir
   without Mix or other dependency management tools.
