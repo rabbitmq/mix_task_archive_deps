@@ -51,7 +51,7 @@ defmodule Mix.Tasks.Archive.Build.All.List do
     elixir = opts[:elixir] || false
     separator = opts[:separator] || "\n"
 
-    archive_name = Mix.Local.name_for(:archive, Mix.Project.config)
+    archive_name = Mix.Local.name_for(:archives, Mix.Project.config)
     archive_path = Path.join([destination, archive_name])
 
     deps_archives = Mix.Tasks.Archive.Build.Deps.list_archives(opts)

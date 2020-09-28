@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Archive.Build.Deps do
     skip = Helpers.skipped_apps(opts)
 
     ## Build delendencies archives
-    Mix.Dep.loaded(env: Mix.env)
+    Mix.Dep.load_on_environment(env: Mix.env)
     |>  Enum.filter(fn(%Mix.Dep{app: app}) -> not Enum.member?(skip, app) end)
     |>  Enum.map(fn(%Mix.Dep{app: app, status: status}) ->
       version = case status do
