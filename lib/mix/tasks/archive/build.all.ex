@@ -1,20 +1,8 @@
+## This Source Code Form is subject to the terms of the Mozilla Public
+## License, v. 2.0. If a copy of the MPL was not distributed with this
+## file, You can obtain one at https://mozilla.org/MPL/2.0/.
 ##
-## The contents of this file are subject to the Mozilla Public License
-## Version 1.1 (the "License"); you may not use this file except in
-## compliance with the License. You may obtain a copy of the License
-## at https://www.mozilla.org/MPL/
-##
-## Software distributed under the License is distributed on an "AS IS"
-## basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
-## the License for the specific language governing rights and
-## limitations under the License.
-##
-## The Original Code is mix_task_archive_deps.
-##
-## The Initial Developer of the Original Code is Daniil Fedotov.
-## Copyright (c) 2017 Daniil Fedotov.  All rights reserved.
-##
-
+## Copyright (c) 2007-2020 VMware, Inc. or its affiliates.  All rights reserved.
 
 defmodule Mix.Tasks.Archive.Build.All do
   use Mix.Task
@@ -50,24 +38,24 @@ defmodule Mix.Tasks.Archive.Build.All do
   * `--skip` - a space-separated list of dependencies to skip
   """
 
-
   @switches [destination: :string, elixir: :boolean, skip: :string]
   @aliases [o: :destination, e: :elixir, l: :list]
 
-  @spec run(OptionParser.argv) :: :ok
+  @spec run(OptionParser.argv()) :: :ok
   def run(argv) do
     Mix.Tasks.Loadpaths.run([])
     {opts, _} = OptionParser.parse!(argv, aliases: @aliases, strict: @switches)
     destination = Mix.Archive.Build.Helpers.destination(opts)
     Mix.Tasks.Archive.Build.Deps.build_archives(opts)
 
-    archive_name = Mix.Local.name_for(:archives, Mix.Project.config)
+    archive_name = Mix.Local.name_for(:archives, Mix.Project.config())
     archive_path = Path.join([destination, archive_name])
     Mix.Tasks.Archive.Build.run(["-o", archive_path])
 
     if opts[:elixir] do
       Mix.Tasks.Archive.Build.Elixir.build_archives(opts)
     end
+
     :ok
   end
 end

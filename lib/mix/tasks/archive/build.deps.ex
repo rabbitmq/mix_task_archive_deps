@@ -1,24 +1,12 @@
+## This Source Code Form is subject to the terms of the Mozilla Public
+## License, v. 2.0. If a copy of the MPL was not distributed with this
+## file, You can obtain one at https://mozilla.org/MPL/2.0/.
 ##
-## The contents of this file are subject to the Mozilla Public License
-## Version 1.1 (the "License"); you may not use this file except in
-## compliance with the License. You may obtain a copy of the License
-## at https://www.mozilla.org/MPL/
-##
-## Software distributed under the License is distributed on an "AS IS"
-## basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
-## the License for the specific language governing rights and
-## limitations under the License.
-##
-## The Original Code is mix_task_archive_deps.
-##
-## The Initial Developer of the Original Code is Daniil Fedotov.
-## Copyright (c) 2017 Daniil Fedotov.  All rights reserved.
-##
-
+## Copyright (c) 2007-2020 VMware, Inc. or its affiliates.  All rights reserved.
 
 defmodule Mix.Tasks.Archive.Build.Deps do
   use Mix.Task
-  alias  Mix.Archive.Build.Helpers, as: Helpers
+  alias Mix.Archive.Build.Helpers, as: Helpers
 
   @shortdoc "Archives the project dependencies into .ez files"
 
@@ -44,7 +32,7 @@ defmodule Mix.Tasks.Archive.Build.Deps do
   @switches [destination: :string, skip: :string]
   @aliases [o: :destination]
 
-  @spec run(OptionParser.argv) :: :ok
+  @spec run(OptionParser.argv()) :: :ok
   def run(argv) do
     {opts, _} = OptionParser.parse!(argv, aliases: @aliases, strict: @switches)
     build_archives(opts)
@@ -52,30 +40,33 @@ defmodule Mix.Tasks.Archive.Build.Deps do
 
   def build_archives(opts) do
     list(opts)
-    |>  Enum.each(fn({app_dir, archive_path}) ->
-          Mix.Tasks.Archive.Build.run(["-i", app_dir, "-o", archive_path])
-        end)
+    |> Enum.each(fn {app_dir, archive_path} ->
+      Mix.Tasks.Archive.Build.run(["-i", app_dir, "-o", archive_path])
+    end)
+
     :ok
   end
 
   def list_archives(opts) do
     list(opts)
-    |> Enum.map(fn({_, archive_path}) -> archive_path end)
+    |> Enum.map(fn {_, archive_path} -> archive_path end)
   end
 
   defp list(opts) do
-    build_path = Mix.Project.build_path
+    build_path = Mix.Project.build_path()
     destination = Helpers.destination(opts)
     skip = Helpers.skipped_apps(opts)
 
     ## Build delendencies archives
-    Mix.Dep.load_on_environment(env: Mix.env)
-    |>  Enum.filter(fn(%Mix.Dep{app: app}) -> not Enum.member?(skip, app) end)
-    |>  Enum.map(fn(%Mix.Dep{app: app, status: status}) ->
-      version = case status do
-        {:ok, vsn} when vsn != nil -> vsn
-        reason -> :erlang.error({:invalid_status, reason})
-      end
+    Mix.Dep.load_on_environment(env: Mix.env())
+    |> Enum.filter(fn %Mix.Dep{app: app} -> not Enum.member?(skip, app) end)
+    |> Enum.map(fn %Mix.Dep{app: app, status: status} ->
+      version =
+        case status do
+          {:ok, vsn} when vsn != nil -> vsn
+          reason -> :erlang.error({:invalid_status, reason})
+        end
+
       archive_path = Path.join([destination, "#{app}-#{version}.ez"])
       app_dir = Path.join([build_path, "lib", "#{app}"])
       {app_dir, archive_path}
