@@ -1,0 +1,7 @@
+# This file contains the recommended versions for building releases for
+# mix_task_archive_deps
+#
+# The versions selected here are the versions that are used to build a binary
+# release for distribution
+elixir 1.13.0-otp-23
+erlang 23.2
