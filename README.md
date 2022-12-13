@@ -25,8 +25,10 @@ end
 Alternatively the package can be installed as an archive from release:
 
 ```
-mix archive.install https://github.com/hairyhum/mix_task_archive_deps/releases/download/1.0.0/mix_task_archive_deps-1.0.0.ez
+mix archive.install \
+    --force \
+    --sha512 SHA512HERE \
+    https://github.com/rabbitmq/mix_task_archive_deps/releases/download/1.0.0/mix_task_archive_deps-1.0.0.ez
 ```
 
 The docs can be found at [https://hexdocs.pm/mix_task_archive_deps](https://hexdocs.pm/mix_task_archive_deps).
-
