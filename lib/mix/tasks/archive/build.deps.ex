@@ -58,7 +58,7 @@ defmodule Mix.Tasks.Archive.Build.Deps do
     skip = Helpers.skipped_apps(opts)
 
     ## Build delendencies archives
-    Mix.Dep.load_on_environment(env: Mix.env())
+    Mix.Dep.load_and_cache()
     |> Enum.filter(fn %Mix.Dep{app: app} -> not Enum.member?(skip, app) end)
     |> Enum.filter(fn %Mix.Dep{opts: opts} -> Keyword.get(opts, :runtime, true) end)
     |> Enum.map(fn %Mix.Dep{app: app, status: status} ->
